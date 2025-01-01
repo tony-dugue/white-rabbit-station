@@ -1,4 +1,3 @@
-
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5434/white_rabbit_station_api
