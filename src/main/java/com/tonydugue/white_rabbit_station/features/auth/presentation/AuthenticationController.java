@@ -3,6 +3,7 @@ package com.tonydugue.white_rabbit_station.features.auth.presentation;
 import com.tonydugue.white_rabbit_station.features.auth.application.AuthenticationService;
 import com.tonydugue.white_rabbit_station.features.auth.dto.RegistrationRequest;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,7 +20,7 @@ public class AuthenticationController {
 
   @PostMapping("/register")
   @ResponseStatus(HttpStatus.ACCEPTED)
-  public ResponseEntity<?> register(@RequestBody @Valid RegistrationRequest request) {
+  public ResponseEntity<?> register(@RequestBody @Valid RegistrationRequest request) throws MessagingException {
     authenticationService.register(request);
     return ResponseEntity.accepted().build();
   }
