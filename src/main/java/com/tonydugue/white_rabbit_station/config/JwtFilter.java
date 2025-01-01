@@ -1,5 +1,6 @@
 package com.tonydugue.white_rabbit_station.config;
 
+import com.tonydugue.white_rabbit_station.shared.utils.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
