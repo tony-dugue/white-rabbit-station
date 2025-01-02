@@ -31,4 +31,9 @@ public class AuthenticationController {
   public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody @Valid AuthenticationRequest request) {
     return ResponseEntity.ok(authenticationService.authenticate(request));
   }
+
+  @PostMapping("/activate-account")
+  public void confirm(@RequestParam String token) throws MessagingException {
+    authenticationService.activateAccount(token);
+  }
 }
