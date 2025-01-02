@@ -3,10 +3,10 @@ package com.tonydugue.white_rabbit_station.shared.email;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
@@ -44,7 +44,7 @@ public class EmailService {
     Context context = new Context();
     context.setVariables(properties);
 
-    helper.setFrom("contact@albumcollection.com");
+    helper.setFrom("contact@whiterabbitstation.com");
     helper.setTo(to);
     helper.setSubject(subject);
 
