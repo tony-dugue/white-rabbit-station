@@ -3,6 +3,7 @@ package com.tonydugue.white_rabbit_station.features.album.presentation;
 import com.tonydugue.white_rabbit_station.features.album.application.AlbumService;
 import com.tonydugue.white_rabbit_station.features.album.dto.AlbumRequest;
 import com.tonydugue.white_rabbit_station.features.album.dto.AlbumResponse;
+import com.tonydugue.white_rabbit_station.shared.common.PageResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,5 +27,14 @@ public class AlbumController {
   @GetMapping("{album-id}")
   public ResponseEntity<AlbumResponse> findAlbumById(@PathVariable("album-id") Integer albumId) {
     return ResponseEntity.ok(albumService.findById(albumId));
+  }
+
+  @GetMapping
+  public ResponseEntity<PageResponse<AlbumResponse>> findAllAlbums(
+          @RequestParam(name = "page", defaultValue = "0", required = false) int page,
+          @RequestParam(name = "size", defaultValue = "10", required = false) int size,
+          Authentication connectedUser
+  ) {
+    return ResponseEntity.ok(albumService.findAllAlbums(page, size, connectedUser));
   }
 }
