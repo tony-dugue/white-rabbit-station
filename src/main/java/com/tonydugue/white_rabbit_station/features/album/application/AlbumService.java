@@ -2,9 +2,11 @@ package com.tonydugue.white_rabbit_station.features.album.application;
 
 import com.tonydugue.white_rabbit_station.features.album.domain.Album;
 import com.tonydugue.white_rabbit_station.features.album.dto.AlbumRequest;
+import com.tonydugue.white_rabbit_station.features.album.dto.AlbumResponse;
 import com.tonydugue.white_rabbit_station.features.album.mapper.AlbumMapper;
 import com.tonydugue.white_rabbit_station.features.album.repository.AlbumRepository;
 import com.tonydugue.white_rabbit_station.features.user.domain.User;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -21,5 +23,11 @@ public class AlbumService {
     Album album = albumMapper.toAlbum(request);
     album.setOwner(user);
     return albumRepository.save(album).getId();
+  }
+
+  public AlbumResponse findById(Integer albumId) {
+    return albumRepository.findById(albumId)
+            .map(albumMapper::toAlbumResponse)
+            .orElseThrow(() -> new EntityNotFoundException("No album found with ID:: " + albumId));
   }
 }
