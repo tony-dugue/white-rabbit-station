@@ -1,6 +1,7 @@
 package com.tonydugue.white_rabbit_station.features.user.domain;
 
 import com.tonydugue.white_rabbit_station.features.auth.domain.Role;
+import com.tonydugue.white_rabbit_station.features.albumCollection.domain.AlbumCollection;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -48,6 +49,9 @@ public class User implements UserDetails, Principal {
 
   @ManyToMany(fetch = FetchType.EAGER)
   private List<Role> roles;
+
+  @OneToMany(mappedBy = "user")
+  private List<AlbumCollection> albumCollections;
 
   @CreatedDate
   @Column(nullable = false, updatable = false)
