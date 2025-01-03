@@ -1,5 +1,6 @@
 package com.tonydugue.white_rabbit_station.features.user.domain;
 
+import com.tonydugue.white_rabbit_station.features.album.domain.Album;
 import com.tonydugue.white_rabbit_station.features.auth.domain.Role;
 import com.tonydugue.white_rabbit_station.features.albumCollection.domain.AlbumCollection;
 import jakarta.persistence.*;
@@ -49,6 +50,9 @@ public class User implements UserDetails, Principal {
 
   @ManyToMany(fetch = FetchType.EAGER)
   private List<Role> roles;
+
+  @OneToMany(mappedBy = "owner")
+  private List<Album> albums;
 
   @OneToMany(mappedBy = "user")
   private List<AlbumCollection> albumCollections;

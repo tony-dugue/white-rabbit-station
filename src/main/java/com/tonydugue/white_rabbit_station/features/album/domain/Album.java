@@ -4,6 +4,7 @@ import com.tonydugue.white_rabbit_station.features.genre.domain.Genre;
 import com.tonydugue.white_rabbit_station.features.label.domain.Label;
 import com.tonydugue.white_rabbit_station.features.track.domain.Track;
 import com.tonydugue.white_rabbit_station.features.albumCollection.domain.AlbumCollection;
+import com.tonydugue.white_rabbit_station.features.user.domain.User;
 import com.tonydugue.white_rabbit_station.shared.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -37,6 +38,10 @@ public class Album extends BaseEntity {
   private String releaseCover;
 
   private String type;
+
+  @ManyToOne
+  @JoinColumn(name = "owner_id")
+  private User owner;
 
   @ManyToMany
   @JoinTable(name = "album_track", joinColumns = @JoinColumn(name = "album_id"), inverseJoinColumns = @JoinColumn(name = "track_id"))
