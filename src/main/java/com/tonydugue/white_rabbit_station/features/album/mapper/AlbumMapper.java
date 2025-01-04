@@ -3,6 +3,7 @@ package com.tonydugue.white_rabbit_station.features.album.mapper;
 import com.tonydugue.white_rabbit_station.features.album.domain.Album;
 import com.tonydugue.white_rabbit_station.features.album.dto.AlbumRequest;
 import com.tonydugue.white_rabbit_station.features.album.dto.AlbumResponse;
+import com.tonydugue.white_rabbit_station.infrastructure.file.FileUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -29,8 +30,7 @@ public class AlbumMapper {
             .description(album.getDescription())
             .owner(album.getOwner().fullName())
             .type(album.getType())
-            // todo implement this later
-            //.albumCover()
+            .albumCover(FileUtils.readFileFromLocation(album.getAlbumCover()))
             .build();
   }
 }
