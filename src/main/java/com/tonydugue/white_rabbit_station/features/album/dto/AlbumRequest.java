@@ -14,6 +14,6 @@ public record AlbumRequest(
         LocalDate releaseDate,
         String studio,
         String description,
-        String releaseCover,
+        String albumCover,
         String type
   ) {}

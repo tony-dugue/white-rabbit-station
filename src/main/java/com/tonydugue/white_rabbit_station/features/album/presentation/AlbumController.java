@@ -4,12 +4,14 @@ import com.tonydugue.white_rabbit_station.features.album.application.AlbumServic
 import com.tonydugue.white_rabbit_station.features.album.dto.AlbumRequest;
 import com.tonydugue.white_rabbit_station.features.album.dto.AlbumResponse;
 import com.tonydugue.white_rabbit_station.shared.common.PageResponse;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("albums")
@@ -36,5 +38,16 @@ public class AlbumController {
           Authentication connectedUser
   ) {
     return ResponseEntity.ok(albumService.findAllAlbums(page, size, connectedUser));
+  }
+
+  @PostMapping(value = "/cover/{album-id}", consumes = "multipart/form-data")
+  public ResponseEntity<?> uploadAlbumCoverPicture(
+          @PathVariable("album-id") Integer albumId,
+          @Parameter()
+          @RequestPart("file") MultipartFile file,
+          Authentication connectedUser
+  ) {
+    albumService.uploadAlbumCoverPicture(file, connectedUser, albumId);
+    return ResponseEntity.accepted().build();
   }
 }

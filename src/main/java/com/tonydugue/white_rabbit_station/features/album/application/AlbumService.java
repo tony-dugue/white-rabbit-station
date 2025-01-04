@@ -6,6 +6,7 @@ import com.tonydugue.white_rabbit_station.features.album.dto.AlbumResponse;
 import com.tonydugue.white_rabbit_station.features.album.mapper.AlbumMapper;
 import com.tonydugue.white_rabbit_station.features.album.repository.AlbumRepository;
 import com.tonydugue.white_rabbit_station.features.user.domain.User;
+import com.tonydugue.white_rabbit_station.infrastructure.file.FileStorageService;
 import com.tonydugue.white_rabbit_station.shared.common.PageResponse;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -25,6 +27,7 @@ public class AlbumService {
 
   private final AlbumRepository albumRepository;
   private final AlbumMapper albumMapper;
+  private final FileStorageService fileStorageService;
 
   public Integer save(AlbumRequest request, Authentication connectedUser) {
     User user = ((User) connectedUser.getPrincipal());
@@ -40,20 +43,30 @@ public class AlbumService {
   }
 
   public PageResponse<AlbumResponse> findAllAlbums(int page, int size, Authentication connectedUser) {
-    User user = ((User) connectedUser.getPrincipal());
     Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
-    Page<Album> releases = albumRepository.findAll(pageable);
-    List<AlbumResponse> releasesResponse = releases.stream()
+    Page<Album> albums = albumRepository.findAll(pageable);
+    List<AlbumResponse> albumsResponse = albums.stream()
             .map(albumMapper::toAlbumResponse)
             .toList();
     return new PageResponse<>(
-            releasesResponse,
-            releases.getNumber(),
-            releases.getSize(),
-            releases.getTotalElements(),
-            releases.getTotalPages(),
-            releases.isFirst(),
-            releases.isLast()
+            albumsResponse,
+            albums.getNumber(),
+            albums.getSize(),
+            albums.getTotalElements(),
+            albums.getTotalPages(),
+            albums.isFirst(),
+            albums.isLast()
     );
+  }
+
+  public void uploadAlbumCoverPicture(MultipartFile file, Authentication connectedUser, Integer albumId) {
+    Album album = albumRepository.findById(albumId)
+            .orElseThrow(() -> new EntityNotFoundException("No album found with ID:: " + albumId));
+
+    User user = ((User) connectedUser.getPrincipal());
+
+    var albumCover = fileStorageService.saveFile(file, user.getId());
+    album.setAlbumCover(albumCover);
+    albumRepository.save(album);
   }
 }

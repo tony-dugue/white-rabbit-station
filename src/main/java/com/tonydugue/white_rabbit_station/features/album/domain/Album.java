@@ -35,7 +35,7 @@ public class Album extends BaseEntity {
   @Column(columnDefinition = "TEXT")
   private String description;
 
-  private String releaseCover;
+  private String albumCover;
 
   private String type;
 
